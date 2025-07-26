@@ -21,6 +21,7 @@ const DashBoard=()=> {
         data:null, 
     });
 
+    const [loading, setLoading] = useState(true);
     const fetchAllSessions=async()=>{ 
         try {
             const response=await axiosInstance.get(API_PATHS.SESSION.GET_ALL);
@@ -42,6 +43,8 @@ const DashBoard=()=> {
             fetchAllSessions();
         }catch(error) {
             console.error("Error deleting session data: ",error);
+        }finally {
+            setLoading(false);
         }
     }
 
