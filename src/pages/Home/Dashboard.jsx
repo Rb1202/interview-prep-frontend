@@ -24,7 +24,7 @@ const DashBoard=()=> {
     });
 
     const {user, loading} = useContext(UserContext);
-    if(loading) return <div>Loading...</div>
+    if(loading) return <div className="  text-[12px] text-black items-center justify-center">Loading...</div>
     if(!user) {
         navigate("/login");
         return null;
@@ -50,8 +50,6 @@ const DashBoard=()=> {
             fetchAllSessions();
         }catch(error) {
             console.error("Error deleting session data: ",error);
-        }finally {
-            setLoading(false);
         }
     }
 
