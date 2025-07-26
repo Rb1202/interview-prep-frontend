@@ -35,6 +35,10 @@ const Login = ({ setCurrentPage }) => {
       if (token) {
         localStorage.setItem("token", token);
         //updateUser({...user,token});
+
+
+
+        
         navigate("/dashboard");
       }
     } catch (error) {

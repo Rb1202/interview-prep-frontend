@@ -54,6 +54,10 @@ const Signup = ({ setCurrentPage }) => {
       if (token) {
         localStorage.setItem("token", token);
         //updateUser(response.data);
+
+
+
+        
         navigate("/dashboard");
       }
     } catch (error) {

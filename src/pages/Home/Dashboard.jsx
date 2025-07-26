@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useContext } from "react";
+import { UserContext } from "../../context/userContext";
 import {LuPlus} from "react-icons/lu";
 import {CARD_BG} from "../../utils/data";
 import toast from "react-hot-toast";
@@ -21,7 +23,12 @@ const DashBoard=()=> {
         data:null, 
     });
 
-    const [loading, setLoading] = useState(true);
+    const {user, loading} = useContext(UserContext);
+    if(loading) return <div>Loading...</div>
+    if(!user) {
+        navigate("/login");
+        return null;
+    }
     const fetchAllSessions=async()=>{ 
         try {
             const response=await axiosInstance.get(API_PATHS.SESSION.GET_ALL);
@@ -49,8 +56,9 @@ const DashBoard=()=> {
     }
 
     useEffect(()=>{
+        if(!user || loading) return;
         fetchAllSessions();
-    },[]);
+    },[user,loading]);
 
     return(
       
