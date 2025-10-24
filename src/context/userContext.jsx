@@ -34,7 +34,7 @@ const UserProvider = ({ children }) => {
 
   const updateUser = (userData) => {
     setUser(userData);
-    if (token) {
+    if (userData?.token) {
       localStorage.setItem("token", userData.token);
     }
     setLoading(false); //Save token
