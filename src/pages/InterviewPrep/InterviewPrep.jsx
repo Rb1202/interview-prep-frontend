@@ -63,7 +63,18 @@ const InterviewPrep = () => {
       }
     } catch (error) {
       setExplanation(null);
-      const errorMessage = error.response?.data?.message || error.response?.data?.error || error.message || "Failed to generate explanation, Try again later";
+      let errorMessage = error.response?.data?.error || error.response?.data?.message || error.message || "Failed to generate explanation, Try again later";
+      
+      // If it's a quota error, add retry information
+      if (error.response?.status === 429 || errorMessage.includes("quota")) {
+        const retryAfter = error.response?.data?.retryAfter;
+        if (retryAfter) {
+          errorMessage += ` Please try again in ${retryAfter} seconds.`;
+        } else {
+          errorMessage += " Please wait a moment and try again.";
+        }
+      }
+      
       setErrorMsg(errorMessage);
       console.error("Error generating explanation: ", error);
       console.error("Error response: ", error.response?.data);
