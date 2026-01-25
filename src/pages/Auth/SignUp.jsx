@@ -50,14 +50,10 @@ const Signup = ({ setCurrentPage }) => {
         profileImageUrl,
       });
 
-      const { token } = response.data;
+      const { token, ...userData } = response.data;
       if (token) {
         localStorage.setItem("token", token);
-        //updateUser(response.data);
-
-
-
-        
+        updateUser({ ...userData, token });
         navigate("/dashboard");
       }
     } catch (error) {

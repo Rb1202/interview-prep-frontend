@@ -31,14 +31,10 @@ const Login = ({ setCurrentPage }) => {
         email,
         password,
       });
-      const { token,user } = response.data;
+      const { token, ...userData } = response.data;
       if (token) {
         localStorage.setItem("token", token);
-        //updateUser({...user,token});
-
-
-
-        
+        updateUser({ ...userData, token });
         navigate("/dashboard");
       }
     } catch (error) {

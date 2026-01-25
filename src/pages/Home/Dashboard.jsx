@@ -24,11 +24,7 @@ const DashBoard=()=> {
     });
 
     const {user, loading} = useContext(UserContext);
-    if(loading) return <div className="  text-[12px] text-black items-center justify-center">Loading...</div>
-    if(!user) {
-        navigate("/login");
-        return null;
-    }
+    
     const fetchAllSessions=async()=>{ 
         try {
             const response=await axiosInstance.get(API_PATHS.SESSION.GET_ALL);
@@ -54,9 +50,16 @@ const DashBoard=()=> {
     }
 
     useEffect(()=>{
-        if(!user || loading) return;
+        if(loading) return;
+        if(!user) {
+            navigate("/login");
+            return;
+        }
         fetchAllSessions();
-    },[user,loading]);
+    },[user, loading, navigate]);
+
+    if(loading) return <div className="  text-[12px] text-black items-center justify-center">Loading...</div>
+    if(!user) return null;
 
     return(
       
