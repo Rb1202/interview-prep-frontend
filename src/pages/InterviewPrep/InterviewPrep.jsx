@@ -58,11 +58,15 @@ const InterviewPrep = () => {
 
       if (response.data) {
         setExplanation(response.data);
+      } else {
+        setErrorMsg("No data received from server");
       }
     } catch (error) {
       setExplanation(null);
-      setErrorMsg("Failed to generate explanation, Try again later");
-      console.error("Error: ", error);
+      const errorMessage = error.response?.data?.message || error.response?.data?.error || error.message || "Failed to generate explanation, Try again later";
+      setErrorMsg(errorMessage);
+      console.error("Error generating explanation: ", error);
+      console.error("Error response: ", error.response?.data);
     } finally {
       setIsLoading(false);
     }
