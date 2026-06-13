@@ -1,6 +1,9 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { Suspense, lazy, useEffect, useState, useRef } from "react";
 import { LuChevronDown, LuPin, LuPinOff, LuSparkles } from "react-icons/lu";
-import AIResponsePreview from "../../pages/InterviewPrep/components/AIResponsePreview";
+
+const AIResponsePreview = lazy(
+  () => import("../../pages/InterviewPrep/components/AIResponsePreview")
+);
 
 const QuestionCard = ({
   question,
@@ -92,7 +95,13 @@ const QuestionCard = ({
             ref={contentRef}
             className="mt-4 text-gray-700 bg-gray-50 px-5 py-3 rounded-lg "
           >
-            <AIResponsePreview content={answer} />
+            {isExpanded && (
+              <Suspense
+                fallback={<p className="text-sm text-gray-500">Loading answer...</p>}
+              >
+                <AIResponsePreview content={answer} />
+              </Suspense>
+            )}
           </div>
         </div>
       </div>

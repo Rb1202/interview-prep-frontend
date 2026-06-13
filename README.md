@@ -1,12 +1,39 @@
-# React + Vite
+# Interview Prep AI Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React and Vite frontend for an AI-assisted interview preparation app.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Account signup/login with cookie-based authenticated requests
+- Dashboard for interview-prep sessions
+- AI-generated Q&A based on role, experience and focus topics
+- Pinned questions, notes and concept explanations
+- Profile photo upload
+- Route-level code splitting for smaller initial loads
 
-## Expanding the ESLint configuration
+## Setup
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Copy `.env.example` to `.env` and point it at the backend API.
+
+3. Start the dev server:
+
+```bash
+npm run dev
+```
+
+## Scripts
+
+- `npm run dev`: Start Vite locally
+- `npm run build`: Build for production
+- `npm run lint`: Run ESLint
+- `npm run preview`: Preview the production build
+
+## Environment Variables
+
+- `VITE_BASE_URL`: Backend API URL, for example `http://localhost:5000`

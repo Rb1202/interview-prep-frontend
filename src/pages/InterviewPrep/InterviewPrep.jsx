@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { Suspense, lazy, useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import moment from "moment";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { LuCircle, LuCircleAlert, LuListCollapse } from "react-icons/lu";
 import SpinnerLoader from "../../Components/Loader/SpinnerLoader";
 import { toast } from "react-hot-toast";
@@ -10,9 +11,12 @@ import RoleInfoHeader from "./components/RoleInfoHeader";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import QuestionCard from "../../Components/Cards/QuestionCard";
-import AIResponsePreview from "./components/AIResponsePreview";
 import Drawer from "../../Components/Loader/Drawer";
 import SkeletonLoader from "../../Components/Loader/SkeletonLoader";
+
+const MotionDiv = motion.div;
+const AIResponsePreview = lazy(() => import("./components/AIResponsePreview"));
+
 const InterviewPrep = () => {
   const { sessionId } = useParams();
 
@@ -26,7 +30,7 @@ const InterviewPrep = () => {
   const [isUpdateLoader, setIsUpdateLoader] = useState(false);
 
   //Fetch session data by session id
-  const fetchSessionDetailsById = async () => {
+  const fetchSessionDetailsById = useCallback(async () => {
     try {
       const response = await axiosInstance.get(
         API_PATHS.SESSION.GET_ONE(sessionId)
@@ -38,7 +42,7 @@ const InterviewPrep = () => {
     } catch (error) {
       console.error("Error", error);
     }
-  };
+  }, [sessionId]);
 
   //generate concept explanation
   const generateConceptExplanation = async (question) => {
@@ -145,14 +149,14 @@ const InterviewPrep = () => {
       fetchSessionDetailsById();
     }
     return () => {};
-  }, []);
+  }, [fetchSessionDetailsById, sessionId]);
   return (
     <DashboardLayout>
       <RoleInfoHeader
         role={sessionData?.role || ""}
         topicsToFocus={sessionData?.topicsToFocus || ""}
         experience={sessionData?.experience || "-"}
-        questions={sessionData?.question?.length || "-"}
+        questions={sessionData?.questions?.length || "-"}
         description={sessionData?.description || ""}
         lastUpdated={
           sessionData?.updatedAt
@@ -173,7 +177,7 @@ const InterviewPrep = () => {
             <AnimatePresence>
               {sessionData?.questions?.map((data, index) => {
                 return (
-                  <motion.div
+                  <MotionDiv
                     key={data._id || index}
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -200,7 +204,7 @@ const InterviewPrep = () => {
                       />
 
                       {!isLoading &&
-                        sessionData?.questions?.length == index + 1 && (
+                        sessionData?.questions?.length === index + 1 && (
                           <div className="flex items-center justify-center mt-5">
                             <button
                               className="flex items-center gap-3 text-sm text-white font-medium bg-black px-5 py-2 mr-2 rounded text-nowrap cursor-pointer"
@@ -217,7 +221,7 @@ const InterviewPrep = () => {
                           </div>
                         )}
                     </>
-                  </motion.div>
+                  </MotionDiv>
                 );
               })}
             </AnimatePresence>
@@ -237,7 +241,9 @@ const InterviewPrep = () => {
             )}
             {isLoading && <SkeletonLoader />}
             {!isLoading && explanation && (
-              <AIResponsePreview content={explanation?.explanation} />
+              <Suspense fallback={<SkeletonLoader />}>
+                <AIResponsePreview content={explanation?.explanation} />
+              </Suspense>
             )}
           </Drawer>
         </div>

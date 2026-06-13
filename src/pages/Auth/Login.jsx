@@ -33,7 +33,6 @@ const Login = ({ setCurrentPage }) => {
       });
       const { token, ...userData } = response.data;
       if (token) {
-        localStorage.setItem("token", token);
         updateUser({ ...userData, token });
         navigate("/dashboard");
       }

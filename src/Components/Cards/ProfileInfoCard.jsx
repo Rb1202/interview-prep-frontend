@@ -1,13 +1,20 @@
 import React, { useContext } from "react";
 import { UserContext } from "../../context/userContext";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../utils/axiosInstance";
+import { API_PATHS } from "../../utils/apiPaths";
 
 const ProfileInfoCard = () => {
   const { user, clearUser } = useContext(UserContext);
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    localStorage.clear();
+  const handleLogout = async () => {
+    try {
+      await axiosInstance.post(API_PATHS.AUTH.LOGOUT);
+    } catch (error) {
+      console.error("Logout failed", error);
+    }
+    localStorage.removeItem("token");
     clearUser();
     navigate("/");
   };

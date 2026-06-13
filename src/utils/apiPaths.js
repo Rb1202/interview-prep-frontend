@@ -1,9 +1,11 @@
-export const BASE_URL = "https://interview-prep-backend-pav7.onrender.com";
+export const BASE_URL =
+  import.meta.env.VITE_BASE_URL || "http://localhost:5000";
 
 export const API_PATHS = {
   AUTH: {
     REGISTER: "/api/auth/register", //Signup
     LOGIN: "/api/auth/login", //Authenticate user and return JWT token
+    LOGOUT: "/api/auth/logout", //Clear auth cookie
     GET_PROFILE: "/api/auth/profile", //Get logged-in user details
   },
 

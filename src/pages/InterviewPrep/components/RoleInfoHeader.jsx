@@ -5,7 +5,6 @@ const RoleInfoHeader=({
     topicsToFocus,
     experience,
     questions,
-    description,
     lastUpdated
 })=>{
     return(
